@@ -21,7 +21,7 @@ public class UserService {
     }
 
     public List<User> getUsers(Filters filters) {
-        var selectedFields = filters == null ? UserDAO.ALL() : Arrays.stream(filters.getSelectFields().split(",")).map(String::trim).toList();
+        var selectedFields = filters.getSelectFields() == null ? UserDAO.ALL() : Arrays.stream(filters.getSelectFields().split(",")).map(String::trim).toList();
         return dbLayer.makeRequest(
                 MultipleDataSourceRequest.builder()
                         .select(selectedFields.toArray(String[]::new))

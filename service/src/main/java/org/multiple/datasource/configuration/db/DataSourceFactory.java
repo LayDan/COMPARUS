@@ -29,31 +29,36 @@ public class DataSourceFactory {
                         String sqlQuery = generateSqlStatement(request);
                         ResultSet resultSet = statement.executeQuery(sqlQuery);
 
-                        List<User> users = new ArrayList<>();
-                        while (resultSet.next()) {
-                            UserBuilder userBuilder = new UserBuilder();
-                            config.getMapping().entrySet().stream().filter(entry -> request.getSelectedFields().contains(entry.getKey())).forEach(entry -> {
-                                try {
-                                    if (entry.getKey().equals(UserDAO.ID)) {
-                                        userBuilder.id(resultSet.getString(entry.getValue()));
+                        if (config.getMapping().entrySet().stream().anyMatch(entry -> request.getSelectedFields().contains(entry.getKey()))) {
+
+
+                            List<User> users = new ArrayList<>();
+                            while (resultSet.next()) {
+                                UserBuilder userBuilder = new UserBuilder();
+                                config.getMapping().entrySet().stream().filter(entry -> request.getSelectedFields().contains(entry.getKey())).forEach(entry -> {
+                                    try {
+                                        if (entry.getKey().equals(UserDAO.ID)) {
+                                            userBuilder.id(resultSet.getString(entry.getValue()));
+                                        }
+                                        if (entry.getKey().equals(UserDAO.NAME)) {
+                                            userBuilder.name(resultSet.getString(entry.getValue()));
+                                        }
+                                        if (entry.getKey().equals(UserDAO.USERNAME)) {
+                                            userBuilder.username(resultSet.getString(entry.getValue()));
+                                        }
+                                        if (entry.getKey().equals(UserDAO.SURNAME)) {
+                                            userBuilder.surname(resultSet.getString(entry.getValue()));
+                                        }
+                                    } catch (SQLException e) {
+                                        throw new RuntimeException(e);
                                     }
-                                    if (entry.getKey().equals(UserDAO.NAME)) {
-                                        userBuilder.name(resultSet.getString(entry.getValue()));
-                                    }
-                                    if (entry.getKey().equals(UserDAO.USERNAME)) {
-                                        userBuilder.username(resultSet.getString(entry.getValue()));
-                                    }
-                                    if (entry.getKey().equals(UserDAO.SURNAME)) {
-                                        userBuilder.surname(resultSet.getString(entry.getValue()));
-                                    }
-                                } catch (SQLException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            });
-                            var user = userBuilder.build();
-                            users.add(user);
+                                });
+                                var user = userBuilder.build();
+                                users.add(user);
+                            }
+                            return users;
                         }
-                        return users;
+                        return List.of();
                     } catch (SQLException e) {
                         handleExceptions(e);
                         return null;
