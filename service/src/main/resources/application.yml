@@ -1,0 +1,29 @@
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger
+
+data-sources:
+  - name: local_postgres_db
+    strategy: postgres #this property is optional, only if you implements multiple database type support (Postgres, ORACLE, MySQL...)
+    url: jdbc:postgresql://localhost:5432/user_comparus_test
+    table: users
+    user: postgres
+    password: 1234
+    mapping:
+      id: id
+      username: username
+      name: name
+      surname: surname
+#  - name: data-base-2
+#    strategy: postgres
+#    url: jdbc://.....
+#    table: user_table
+#    user: testuser
+#    password: testpass
+#    mapping:
+#      id: ldap_login
+#      username: ldap_login
+#      name: name
+#      surname: surname

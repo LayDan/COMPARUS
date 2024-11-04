@@ -1,0 +1,34 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+paths:
+  /users:
+    get:
+      tags:
+        - user-controller
+      summary: Get all users
+      description: Return all users from different DBs
+      operationId: getUsers
+      responses:
+        "200":
+          description: Success answer with all selected users form different DBs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        name:
+          type: string
+        surname:
+          type: string

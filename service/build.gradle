@@ -1,0 +1,52 @@
+plugins {
+    id 'java-library'
+    id "org.springframework.boot" version "3.0.4"
+    id "io.spring.dependency-management" version "1.1.0"
+}
+
+group = 'org.multiple.datasource'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    sourceCompatibility = 17
+    targetCompatibility = 17
+}
+
+dependencies {
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+    implementation "io.swagger.core.v3:swagger-annotations:2.2.2"
+    implementation "org.openapitools:jackson-databind-nullable:0.2.2"
+    implementation "javax.validation:validation-api:2.0.1.Final"
+
+    implementation "org.postgresql:postgresql:42.5.4"
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.0.4'
+
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation project(':processors')
+    implementation 'com.google.auto.service:auto-service-annotations:1.0-rc5'
+    annotationProcessor project(':processors')
+}
+
+tasks.withType(JavaCompile) {
+    doFirst {
+        options.annotationProcessorPath = configurations.annotationProcessor
+        println "AnnotationProcessorPath for $name is"
+        println options.getAnnotationProcessorPath().getFiles()
+
+
+        options.getAnnotationProcessorPath().getFiles().forEach {
+            (name) -> {
+                println name;
+            }
+        }
+
+    }
+}
+test {
+    useJUnitPlatform()
+}
