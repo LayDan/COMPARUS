@@ -30,6 +30,10 @@ dependencies {
     implementation project(':processors')
     implementation 'com.google.auto.service:auto-service-annotations:1.0-rc5'
     annotationProcessor project(':processors')
+
+    testImplementation "org.testcontainers:testcontainers:1.20.3"
+    implementation platform('org.testcontainers:testcontainers-bom:1.20.3') //import bom
+    testImplementation('org.testcontainers:postgresql') //no version specified
 }
 
 tasks.withType(JavaCompile) {
