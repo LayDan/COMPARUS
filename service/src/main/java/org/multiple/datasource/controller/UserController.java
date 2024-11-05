@@ -1,20 +1,18 @@
 package org.multiple.datasource.controller;
 
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.multiple.datasource.entity.User;
 import org.multiple.datasource.service.UserService;
+import org.openapitools.api.UsersApi;
+import org.openapitools.model.Filters;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-public class UserController {
+public class UserController implements UsersApi {
 
     private final UserService userService;
 
@@ -22,21 +20,21 @@ public class UserController {
         this.userService = userService;
     }
 
-    @Operation(
-            operationId = "getUsers",
-            summary = "Get all users",
-            description = "Return all users from different DBs",
-            tags = {"user-controller"}
-    )
-    @RequestMapping(
-            method = RequestMethod.GET,
-            value = "/users",
-            produces = {"application/json"}
-    )
-    public ResponseEntity<List<User>> getUsers(Filters filters) {
+
+    @Override
+    public ResponseEntity<List<org.openapitools.model.User>> getUsers(Filters filters) {
         var users = userService.getUsers(filters);
-        return ResponseEntity.ok(users);
+        return ResponseEntity.ok(map(users));
     }
 
-
+    private List<org.openapitools.model.User> map(List<User> users) {
+        return users.stream().map(user -> {
+            var u = new org.openapitools.model.User();
+            u.setId(user.getId());
+            u.setName(user.getName());
+            u.setSurname(user.getSurname());
+            u.setUsername(user.getUsername());
+            return u;
+        }).collect(Collectors.toList());
+    }
 }

@@ -5,8 +5,8 @@ import org.multiple.datasource.configuration.db.DataBaseLayer;
 import org.multiple.datasource.configuration.db.DataSourceConfiguration;
 import org.multiple.datasource.configuration.db.MultipleDataBaseLayer;
 import org.multiple.datasource.configuration.db.Strategy;
-import org.multiple.datasource.controller.Filters;
 import org.multiple.datasource.entity.User;
+import org.openapitools.model.Filters;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.util.HashMap;

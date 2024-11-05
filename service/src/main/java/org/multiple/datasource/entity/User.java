@@ -1,5 +1,6 @@
 package org.multiple.datasource.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.multiple.datasource.processing.Builder;
 import org.multiple.datasource.processing.DataSourceProperty;
 

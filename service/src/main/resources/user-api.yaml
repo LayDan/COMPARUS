@@ -2,6 +2,8 @@ openapi: 3.0.1
 info:
   title: OpenAPI definition
   version: v0
+servers:
+  - url: http://localhost:8080
 paths:
   /users:
     get:
@@ -10,9 +12,15 @@ paths:
       summary: Get all users
       description: Return all users from different DBs
       operationId: getUsers
+      parameters:
+        - name: filters
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/Filters'
       responses:
         "200":
-          description: Success answer with all selected users form different DBs
+          description: OK
           content:
             application/json:
               schema:
@@ -21,6 +29,11 @@ paths:
                   $ref: '#/components/schemas/User'
 components:
   schemas:
+    Filters:
+      type: object
+      properties:
+        selectFields:
+          type: string
     User:
       type: object
       properties:
